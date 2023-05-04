@@ -1,7 +1,8 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
+import fileReader.NxNFileReader
+import java.io.File
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+fun main(args: Array<String>) {
+    val file = File("src/main/resources/puzzle.9x9")
+    val fileReader = NxNFileReader(9)
+    fileReader.parseSudoku(file)
 }

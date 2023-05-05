@@ -11,16 +11,26 @@ class SamuraiFileReader : IFileReader {
         val content = readFile(file).chunked(81)
         val groups = mutableListOf<SudokuGroup>()
         val grids = mutableListOf<Array<Array<SudokuCell>>>()
+        val cells = HashMap<Pair<Int, Int>, SudokuCell>()
         for (i in 0..4) {
             val startCoords = getStartCoordinates(i)
             val grid = Array(9) { row ->
                 Array(9) { col ->
                     val index = row * 9 + col
-                    SudokuCell(
-                        CellValue(content[i][index].toString().toInt(), true),
-                        startCoords.first + col,
-                        startCoords.second + row
-                    )
+                    val value = CellValue(content[i][index].toString().toInt(), true)
+                    val cellCoords = Pair(startCoords.first + col, startCoords.second + row)
+                    val cell = cells.getOrPut(cellCoords) {
+                        SudokuCell(
+                            value,
+                            cellCoords.first,
+                            cellCoords.second
+                        )
+                    }
+                    //overwrite if previous is 0 and current is not 0
+                    if (cell.value.value == 0 && value.value != 0) {
+                        cell.value = value
+                    }
+                    cell
                 }
             }
             grids.add(grid)

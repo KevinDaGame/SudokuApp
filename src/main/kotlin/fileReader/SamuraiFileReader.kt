@@ -35,9 +35,9 @@ class SamuraiFileReader : IFileReader {
             }
             grids.add(grid)
 
-            groups.addAll(checkRows(grid))
-            groups.addAll(checkColumns(grid))
-            groups.addAll(checkBlocks(grid, 3, 3))
+            groups.addAll(createRows(grid))
+            groups.addAll(createColumns(grid))
+            groups.addAll(createBlocks(grid, 3, 3))
         }
         return SudokuModel(groups, 21, 21)
     }

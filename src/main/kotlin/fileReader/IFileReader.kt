@@ -24,11 +24,11 @@ interface IFileReader {
     fun parseSudoku(file: File): SudokuModel
 
     /**
-     * default method for checking rows
-     * @param sudoku the sudoku to check
+     * default method for creating rows
+     * @param sudoku the sudoku to create
      * @return a list of SudokuGroups
      */
-    fun checkRows(sudoku: Array<Array<SudokuCell>>): List<SudokuGroup> {
+    fun createRows(sudoku: Array<Array<SudokuCell>>): List<SudokuGroup> {
         val groups = mutableListOf<SudokuGroup>()
         for (element in sudoku) {
             groups.add(SudokuGroup(element.toList()))
@@ -37,11 +37,11 @@ interface IFileReader {
     }
 
     /**
-     * default method for checking columns
-     * @param sudoku the sudoku to check
+     * default method for creating columns
+     * @param sudoku the sudoku to create
      * @return a list of SudokuGroups
      */
-    fun checkColumns(sudoku: Array<Array<SudokuCell>>): List<SudokuGroup> {
+    fun createColumns(sudoku: Array<Array<SudokuCell>>): List<SudokuGroup> {
         val groups = mutableListOf<SudokuGroup>()
         for (i in sudoku.indices) {
             val column = mutableListOf<SudokuCell>()
@@ -54,13 +54,13 @@ interface IFileReader {
     }
 
     /**
-     * default method for checking blocks
-     * @param sudoku the sudoku to check
+     * default method for creating blocks
+     * @param sudoku the sudoku to create
      * @param blockWidth the width of the block
      * @param blockHeight the height of the block
      * @return a list of SudokuGroups
      */
-    fun checkBlocks(sudoku: Array<Array<SudokuCell>>, blockWidth: Int, blockHeight: Int): List<SudokuGroup> {
+    fun createBlocks(sudoku: Array<Array<SudokuCell>>, blockWidth: Int, blockHeight: Int): List<SudokuGroup> {
         val groups = mutableListOf<SudokuGroup>()
         for (i in 1..sudoku.size / blockWidth) {
             for (j in 1..sudoku.size / blockHeight) {

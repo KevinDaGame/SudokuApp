@@ -37,9 +37,9 @@ class NxNFileReader(private val size: Int) : IFileReader {
 
         val groups = mutableListOf<SudokuGroup>()
 
-        groups.addAll(checkRows(grid))
-        groups.addAll(checkColumns(grid))
-        groups.addAll(checkBlocks(grid, calcBlockWidth(), calcBlockHeight()))
+        groups.addAll(createRows(grid))
+        groups.addAll(createColumns(grid))
+        groups.addAll(createBlocks(grid, calcBlockWidth(), calcBlockHeight()))
 
         return SudokuModel(groups, size, size)
     }

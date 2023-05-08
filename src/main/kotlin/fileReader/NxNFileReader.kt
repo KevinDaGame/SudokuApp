@@ -1,9 +1,6 @@
 package fileReader
 
-import model.CellValue
-import model.SudokuCell
-import model.SudokuGroup
-import model.SudokuModel
+import model.*
 import java.io.File
 
 class NxNFileReader(private val size: Int) : IFileReader {
@@ -26,6 +23,10 @@ class NxNFileReader(private val size: Int) : IFileReader {
     }
 
     override fun parseSudoku(file: File): SudokuModel {
+        val builder = SudokuModelBuilder()
+        builder.height(size)
+        builder.width(size)
+
         val content = readFile(file)
 
         val grid = Array(size) { row ->
@@ -35,12 +36,10 @@ class NxNFileReader(private val size: Int) : IFileReader {
             }
         }
 
-        val groups = mutableListOf<SudokuGroup>()
+        builder.addGroups(createRows(grid))
+        builder.addGroups(createColumns(grid))
+        builder.addGroups(createBlocks(grid, calcBlockWidth(), calcBlockHeight()))
 
-        groups.addAll(createRows(grid))
-        groups.addAll(createColumns(grid))
-        groups.addAll(createBlocks(grid, calcBlockWidth(), calcBlockHeight()))
-
-        return SudokuModel(groups, size, size)
+        return builder.build()
     }
 }

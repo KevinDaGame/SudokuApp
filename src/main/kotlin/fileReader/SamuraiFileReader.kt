@@ -1,15 +1,15 @@
 package fileReader
 
-import model.CellValue
-import model.SudokuCell
-import model.SudokuGroup
-import model.SudokuModel
+import model.*
 import java.io.File
 
 class SamuraiFileReader : IFileReader {
     override fun parseSudoku(file: File): SudokuModel {
+        val builder = SudokuModelBuilder()
+        builder.height(21)
+        builder.width(21)
         val content = readFile(file).chunked(81)
-        val groups = mutableListOf<SudokuGroup>()
+
         val grids = mutableListOf<Array<Array<SudokuCell>>>()
         val cells = HashMap<Pair<Int, Int>, SudokuCell>()
         for (i in 0..4) {
@@ -26,6 +26,7 @@ class SamuraiFileReader : IFileReader {
                             cellCoords.second
                         )
                     }
+
                     //overwrite if previous is 0 and current is not 0
                     if (cell.value.value == 0 && value.value != 0) {
                         cell.value = value
@@ -35,11 +36,11 @@ class SamuraiFileReader : IFileReader {
             }
             grids.add(grid)
 
-            groups.addAll(createRows(grid))
-            groups.addAll(createColumns(grid))
-            groups.addAll(createBlocks(grid, 3, 3))
+            builder.addGroups(createRows(grid))
+            builder.addGroups(createColumns(grid))
+            builder.addGroups(createBlocks(grid, 3, 3))
         }
-        return SudokuModel(groups, 21, 21)
+        return builder.build()
     }
 
     /**

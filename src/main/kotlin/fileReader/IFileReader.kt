@@ -1,5 +1,6 @@
 package fileReader
 
+import model.SudokuBlock
 import model.SudokuCell
 import model.SudokuGroup
 import model.SudokuModel
@@ -60,8 +61,8 @@ interface IFileReader {
      * @param blockHeight the height of the block
      * @return a list of SudokuGroups
      */
-    fun createBlocks(sudoku: Array<Array<SudokuCell>>, blockWidth: Int, blockHeight: Int): List<SudokuGroup> {
-        val groups = mutableListOf<SudokuGroup>()
+    fun createBlocks(sudoku: Array<Array<SudokuCell>>, blockWidth: Int, blockHeight: Int): List<SudokuBlock> {
+        val groups = mutableListOf<SudokuBlock>()
         for (i in 1..sudoku.size / blockWidth) {
             for (j in 1..sudoku.size / blockHeight) {
                 val block = mutableListOf<SudokuCell>()
@@ -70,7 +71,7 @@ interface IFileReader {
                         block.add(sudoku[(i - 1) * blockWidth + k - 1][(j - 1) * blockHeight + l - 1])
                     }
                 }
-                groups.add(SudokuGroup(block))
+                groups.add(SudokuBlock(block))
             }
         }
         return groups

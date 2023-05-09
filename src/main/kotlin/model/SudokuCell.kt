@@ -2,14 +2,19 @@ package model
 
 class SudokuCell(var value: CellValue, val x: Int, val y: Int): ICheckable {
     override fun isSolved(): Boolean {
-        return !(value.value == 0 || !value.isDefinitive)
+        return isDefinitiveAndFilled()
+
     }
 
     override fun getInvalidCells(): List<SudokuCell> {
-        if(value.isDefinitive && value.value != 0) {
+        if (isDefinitiveAndFilled()) {
             return listOf(this)
         }
         return listOf()
+    }
+
+    private fun isDefinitiveAndFilled(): Boolean {
+        return value.value != 0 && value.isDefinitive
     }
 
     override fun toString(): String {

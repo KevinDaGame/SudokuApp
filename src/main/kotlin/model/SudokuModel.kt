@@ -1,4 +1,15 @@
 package model
 
-class SudokuModel(val sudokuGroups: List<SudokuGroup>, val height: Int, val width: Int) {
+class SudokuModel(val sudokuGroups: List<SudokuGroup>, val height: Int, val width: Int): ICheckable {
+    override fun isSolved(): Boolean {
+        return sudokuGroups.all {it.isSolved()}
+    }
+
+    override fun getInvalidCells(): List<SudokuCell> {
+        val invalidCells = mutableListOf<SudokuCell>()
+        for (group in sudokuGroups) {
+            invalidCells.addAll(group.getInvalidCells())
+        }
+        return invalidCells.distinct()
+    }
 }

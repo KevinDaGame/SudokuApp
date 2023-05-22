@@ -1,6 +1,8 @@
 package view
 
 import controller.SudokuController
+import io.github.shuoros.jterminal.JTerminal
+import io.github.shuoros.jterminal.ansi.Color
 import model.BorderDirection
 
 class SudokuView(private val controller: SudokuController) : IView {
@@ -24,42 +26,45 @@ class SudokuView(private val controller: SudokuController) : IView {
         println("\n".repeat(100)) // clear screen
 
         val viewModel = SudokuViewModel(controller.getBlocks(), controller.model.width, controller.model.height)
-        val board = Array(viewModel.width * 2 + 1) { Array(viewModel.height * 2 + 1) { ' ' } }
+        val board = Array(viewModel.width * 2 + 1) { Array(viewModel.height * 2 + 1) { ConsoleChar() } }
         for ((y, row) in viewModel.board.withIndex()) {
             for ((x, cell) in row.withIndex()) {
                 if (cell != null) {
-                    board[y * 2 + 1][x * 2 + 1] = cell.value.value.digitToChar()
+                    board[y * 2 + 1][x * 2 + 1] = ConsoleChar(cell.value.value.digitToChar())
 
+
+                    val horizontalBorder = ConsoleChar('-', Color.SILVER)
+                    val verticalBorder = ConsoleChar('|', Color.SILVER)
                     for (border in cell.borders) {
                         when (border) {
                             BorderDirection.UP -> {
-                                board[y * 2][x * 2 + 1] = '-'
+                                board[y * 2][x * 2 + 1] = horizontalBorder
                                 if (!cell.borders.contains(BorderDirection.RIGHT)) {
-                                    board[y * 2][x * 2 + 2] = '-'
+                                    board[y * 2][x * 2 + 2] = horizontalBorder
                                 }
                             }
 
                             BorderDirection.DOWN -> {
-                                board[y * 2 + 2][x * 2 + 1] = '-'
+                                board[y * 2 + 2][x * 2 + 1] = horizontalBorder
                                 if (!cell.borders.contains(BorderDirection.RIGHT)) {
-                                    board[y * 2 + 2][x * 2 + 2] = '-'
+                                    board[y * 2 + 2][x * 2 + 2] = horizontalBorder
                                 }
                             }
 
                             BorderDirection.LEFT -> {
-                                board[y * 2 + 1][x * 2] = '|'
-                                board[y * 2 + 2][x * 2] = '|'
+                                board[y * 2 + 1][x * 2] = verticalBorder
+                                board[y * 2 + 2][x * 2] = verticalBorder
                                 if(cell.borders.contains(BorderDirection.UP)) {
-                                    board[y * 2][x * 2] = '|'
+                                    board[y * 2][x * 2] = verticalBorder
                                 }
 
                             }
 
                             BorderDirection.RIGHT -> {
-                                board[y * 2 + 1][x * 2 + 2] = '|'
-                                board[y * 2 + 2][x * 2 + 2] = '|'
+                                board[y * 2 + 1][x * 2 + 2] = verticalBorder
+                                board[y * 2 + 2][x * 2 + 2] = verticalBorder
                                 if(cell.borders.contains(BorderDirection.UP)) {
-                                    board[y * 2][x * 2 + 2] = '|'
+                                    board[y * 2][x * 2 + 2] = verticalBorder
                                 }
                             }
                         }
@@ -72,20 +77,20 @@ class SudokuView(private val controller: SudokuController) : IView {
         }
 
         //show cursor
-        board[y * 2][x * 2] = '#'
-        board[y * 2][x * 2 + 1] = '#'
-        board[y * 2][x * 2 + 2] = '#'
-        board[y * 2 + 1][x * 2] = '#'
-        board[y * 2 + 1][x * 2 + 2] = '#'
-        board[y * 2 + 2][x * 2] = '#'
-        board[y * 2 + 2][x * 2 + 1] = '#'
-        board[y * 2 + 2][x * 2 + 2] = '#'
+        board[y * 2][x * 2] = ConsoleChar(board[y*2][x*2].char, background = Color.RED)
+        board[y * 2][x * 2 + 1] = ConsoleChar(board[y*2][x * 2 + 1].char, background = Color.RED)
+        board[y * 2][x * 2 + 2] = ConsoleChar(board[y*2][x * 2 + 2].char, background = Color.RED)
+        board[y * 2 + 1][x * 2] = ConsoleChar(board[y*2 + 1][x * 2].char, background = Color.RED)
+        board[y * 2 + 1][x * 2 + 2] = ConsoleChar(board[y*2 + 1][x * 2 + 2].char, background = Color.RED)
+        board[y * 2 + 2][x * 2] = ConsoleChar(board[y*2 + 2][x * 2].char, background = Color.RED)
+        board[y * 2 + 2][x * 2 + 1] = ConsoleChar(board[y*2 + 2][x * 2 + 1].char, background = Color.RED)
+        board[y * 2 + 2][x * 2 + 2] = ConsoleChar(board[y*2 + 2][x * 2 + 2].char, background = Color.RED)
 
 
 
         for (line in board) {
             for (cell in line) {
-                print(cell)
+                JTerminal.print(cell.char.toString(), cell.color, cell.background)
             }
             println()
         }

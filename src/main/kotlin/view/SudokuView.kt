@@ -1,7 +1,6 @@
 package view
 
 import controller.SudokuController
-import model.SudokuCell
 import java.lang.StringBuilder
 
 class SudokuView(private val controller: SudokuController) : IView {
@@ -16,31 +15,7 @@ class SudokuView(private val controller: SudokuController) : IView {
     }
 
     override fun render() {
-        val blocks = controller.getBlocks()
-        val board = Array(controller.model.height) { arrayOfNulls<SudokuCell>(controller.model.width) }
-        val lines = Array(controller.model.height) { Array(controller.model.width) { Pair(false, false) } }
-
-        for (block in blocks) {
-            for (cell in block.cells) {
-                board[cell.y][cell.x] = cell
-                var borderX = false
-                var borderY = false
-                if (cell.x < controller.model.width && block.isLastX(cell.x, cell.y)) {
-                    borderX = true
-                }
-                if (cell.y < controller.model.height && block.isLastY(cell.x, cell.y)) {
-                    borderY = true
-                }
-                lines[cell.y][cell.x] = Pair(borderX, borderY)
-
-            }
-        }
-
-        printHorizontalBorder(controller.model.width)
-        for (i in 0..controller.model.height - 1) {
-            printRow(board[i], lines[i])
-
-        }
+       printSudoku()
         println("x: $x, y: $y")
 
     }
@@ -49,10 +24,20 @@ class SudokuView(private val controller: SudokuController) : IView {
         println("|-----|-----|-----|")
     }
 
-    private fun printRow(row: Array<SudokuCell?>, line: Array<Pair<Boolean, Boolean>>) {
+    private fun printSudoku() {
+        val viewModel = SudokuViewModel(controller.getBlocks(), controller.model.width, controller.model.height)
+
+
+        printHorizontalBorder(controller.model.width)
+        for(line in viewModel.board) {
+            printRow(line)
+        }
+    }
+
+    private fun printRow(line: Array<ViewSudokuCell?>) {
         val horizontalLine = StringBuilder()
         var isFirst = true
-        for (cell in row) {
+        for (cell in line) {
             if (cell != null) {
                 if (isFirst) {
                     print("|")
@@ -60,20 +45,18 @@ class SudokuView(private val controller: SudokuController) : IView {
                     isFirst = false
                 }
                 print(cell.value.value)
-
-                val currentLine = line[cell.x]
-                if (currentLine.second) {
-                    if (!currentLine.first) {
+                if (cell.borderY) {
+                    if (!cell.borderX) {
                         horizontalLine.append("-")
                     }
                     horizontalLine.append("-")
                 } else {
-                    if (!currentLine.first) {
+                    if (!cell.borderX) {
                         horizontalLine.append(" ")
                     }
                     horizontalLine.append(" ")
                 }
-                if (currentLine.first) {
+                if (cell.borderX) {
                     print("|")
                     horizontalLine.append("|")
                 } else {

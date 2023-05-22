@@ -1,11 +1,11 @@
 package view
 
 import controller.SudokuController
-import java.lang.StringBuilder
+import model.BorderDirection
 
 class SudokuView(private val controller: SudokuController) : IView {
-    var x: Int = 0
-    var y: Int = 0
+    private var x: Int = 0
+    private var y: Int = 0
 
     init {
         while (true) {
@@ -15,66 +15,80 @@ class SudokuView(private val controller: SudokuController) : IView {
     }
 
     override fun render() {
-       printSudoku()
+        printSudoku()
         println("x: $x, y: $y")
 
     }
 
-    private fun printHorizontalBorder(width: Int) {
-        println("|-----|-----|-----|")
-    }
-
     private fun printSudoku() {
+        println("\n".repeat(100)) // clear screen
+
         val viewModel = SudokuViewModel(controller.getBlocks(), controller.model.width, controller.model.height)
+        val board = Array(viewModel.width * 2 + 1) { Array(viewModel.height * 2 + 1) { ' ' } }
+        for ((y, row) in viewModel.board.withIndex()) {
+            for ((x, cell) in row.withIndex()) {
+                if (cell != null) {
+                    board[y * 2 + 1][x * 2 + 1] = cell.value.value.digitToChar()
 
+                    for (border in cell.borders) {
+                        when (border) {
+                            BorderDirection.UP -> {
+                                board[y * 2][x * 2 + 1] = '-'
+                                if (!cell.borders.contains(BorderDirection.RIGHT)) {
+                                    board[y * 2][x * 2 + 2] = '-'
+                                }
+                            }
 
-        printHorizontalBorder(controller.model.width)
-        for(line in viewModel.board) {
-            printRow(line)
-        }
-    }
+                            BorderDirection.DOWN -> {
+                                board[y * 2 + 2][x * 2 + 1] = '-'
+                                if (!cell.borders.contains(BorderDirection.RIGHT)) {
+                                    board[y * 2 + 2][x * 2 + 2] = '-'
+                                }
+                            }
 
-    private fun printRow(line: Array<ViewSudokuCell?>) {
-        val horizontalLine = StringBuilder()
-        var isFirst = true
-        for (cell in line) {
-            if (cell != null) {
-                if (isFirst) {
-                    print("|")
-                    horizontalLine.append("|")
-                    isFirst = false
-                }
-                print(cell.value.value)
-                if (cell.borderY) {
-                    if (!cell.borderX) {
-                        horizontalLine.append("-")
+                            BorderDirection.LEFT -> {
+                                board[y * 2 + 1][x * 2] = '|'
+                                board[y * 2 + 2][x * 2] = '|'
+                                if(cell.borders.contains(BorderDirection.UP)) {
+                                    board[y * 2][x * 2] = '|'
+                                }
+
+                            }
+
+                            BorderDirection.RIGHT -> {
+                                board[y * 2 + 1][x * 2 + 2] = '|'
+                                board[y * 2 + 2][x * 2 + 2] = '|'
+                                if(cell.borders.contains(BorderDirection.UP)) {
+                                    board[y * 2][x * 2 + 2] = '|'
+                                }
+                            }
+                        }
                     }
-                    horizontalLine.append("-")
-                } else {
-                    if (!cell.borderX) {
-                        horizontalLine.append(" ")
-                    }
-                    horizontalLine.append(" ")
+
+
                 }
-                if (cell.borderX) {
-                    print("|")
-                    horizontalLine.append("|")
-                } else {
-                    print(" ")
-                }
-            } else {
-                if (!isFirst) {
-                    print(" ")
-                    horizontalLine.append(" ")
-                    isFirst = true
-                    continue
-                }
-                print("  ")
-                horizontalLine.append("  ")
+
             }
         }
-        println()
-        println(horizontalLine)
+
+        //show cursor
+        board[y * 2][x * 2] = '#'
+        board[y * 2][x * 2 + 1] = '#'
+        board[y * 2][x * 2 + 2] = '#'
+        board[y * 2 + 1][x * 2] = '#'
+        board[y * 2 + 1][x * 2 + 2] = '#'
+        board[y * 2 + 2][x * 2] = '#'
+        board[y * 2 + 2][x * 2 + 1] = '#'
+        board[y * 2 + 2][x * 2 + 2] = '#'
+
+
+
+        for (line in board) {
+            for (cell in line) {
+                print(cell)
+            }
+            println()
+        }
     }
 
     fun getInput() {

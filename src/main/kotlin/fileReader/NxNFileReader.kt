@@ -42,4 +42,12 @@ class NxNFileReader(private val size: Int) : IFileReader {
 
         return builder.build()
     }
+
+    companion object {
+        fun register() {
+            FileReaderFactory.registerFileReader(NxNFileReader(4), "4x4")
+            FileReaderFactory.registerFileReader(NxNFileReader(6), "6x6")
+            FileReaderFactory.registerFileReader(NxNFileReader(9), "9x9")
+        }
+    }
 }

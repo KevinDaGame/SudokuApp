@@ -1,5 +1,6 @@
 package view
 
+import controller.FileController
 import controller.SudokuController
 import fileReader.NxNFileReader
 import fileReader.SamuraiFileReader
@@ -8,42 +9,43 @@ import java.io.File
 import javax.swing.JFileChooser
 
 
-class FileView: IView {
+class FileView : IView {
+    private val controller: FileController = FileController()
     override fun render() {
-        JTerminal.println("Open a sudoku\n" +
-                "0: Open a file\n" +
-                "1: Open standard sudoku\n" +
-                "2: Samurai\n" +
-                "3: Go back\n"
+        JTerminal.println(
+            "Open a sudoku\n" +
+                    "0: Open a file\n" +
+                    "1: Open standard sudoku(dev only)\n" +
+                    "2: Samurai(dev only)\n" +
+                    "3: Go back\n"
         )
     }
 
     override fun handleInput(input: Char) {
-        when(input) {
+        when (input) {
             '0' -> {
                 val file = openFilePicker()
-                if(file != null) {
-                    openSudoku(file)
+                if (file != null) {
+                    controller.openSudoku(file)
                 }
             }
+
             '1' -> {
-                val file = File("C:\\Users\\kevin\\Documents\\GitHub\\SudokuApp\\src\\main\\resources\\puzzles\\puzzle.9x9")
-                openSudoku(file)
+                val file =
+                    File("C:\\Users\\kevin\\Documents\\GitHub\\SudokuApp\\src\\main\\resources\\puzzles\\puzzle.9x9")
+                controller.openSudoku(file)
             }
+
             '2' -> {
-                val file = File("C:\\Users\\kevin\\Documents\\GitHub\\SudokuApp\\src\\main\\resources\\puzzles\\puzzle.samurai")
-                openSudoku(file, true)
+                val file =
+                    File("C:\\Users\\kevin\\Documents\\GitHub\\SudokuApp\\src\\main\\resources\\puzzles\\puzzle.samurai")
+                controller.openSudoku(file)
             }
+
             '3' -> ViewManager.instance.activeView = MainView()
         }
     }
 
-    private fun openSudoku(file: File, isSamurai: Boolean = false) {
-
-        val fileReader = if (isSamurai) SamuraiFileReader() else NxNFileReader(9)
-        val sudoku = fileReader.parseSudoku(file)
-        ViewManager.instance.activeView = SudokuView(SudokuController(sudoku))
-    }
 
     private fun openFilePicker(): File? {
         JTerminal.println("Opening file picker")

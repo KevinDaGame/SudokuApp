@@ -1,3 +1,6 @@
+import fileReader.JigsawFileReader
+import fileReader.NxNFileReader
+import fileReader.SamuraiFileReader
 import view.ViewManager
 
 fun main(args: Array<String>) {
@@ -12,6 +15,10 @@ fun main(args: Array<String>) {
 //
 //    val sudokuController = SudokuController(sudoku1)
 //    val sudokuView = SudokuView(sudokuController)
+    NxNFileReader.register()
+    SamuraiFileReader.register()
+    JigsawFileReader.register()
+
     val viewManager = ViewManager.instance
     viewManager.start()
 }

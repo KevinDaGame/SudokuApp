@@ -59,4 +59,10 @@ class SamuraiFileReader : IFileReader {
         }
         throw IllegalArgumentException("Invalid index")
     }
+
+    companion object {
+        fun register() {
+            FileReaderFactory.registerFileReader(SamuraiFileReader(), "samurai")
+        }
+    }
 }

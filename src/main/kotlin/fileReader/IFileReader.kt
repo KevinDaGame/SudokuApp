@@ -8,6 +8,7 @@ import java.io.File
 import java.util.*
 
 interface IFileReader {
+
     /**
      * reads the file and returns the content as a string
      * @param file the file to read

@@ -1,8 +1,8 @@
 package model
 
-class SudokuModel(val sudokuGroups: List<SudokuGroup>, val height: Int, val width: Int): ICheckable {
+class SudokuModel(val sudokuGroups: List<SudokuGroup>, val height: Int, val width: Int) : ICheckable {
     override fun isSolved(): Boolean {
-        return sudokuGroups.all {it.isSolved()}
+        return sudokuGroups.all { it.isSolved() }
     }
 
     override fun getInvalidCells(): List<SudokuCell> {

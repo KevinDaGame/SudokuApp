@@ -6,6 +6,7 @@ import model.SudokuCell
 
 class SudokuViewModel(blocks: List<SudokuBlock>, val width: Int, val height: Int) {
     val board: Array<Array<ViewSudokuCell?>>
+
     init {
         val constructBoard = Array(height) { arrayOfNulls<ViewSudokuCell>(width) }
         for (block in blocks) {

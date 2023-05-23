@@ -1,9 +1,6 @@
 package view
 
 import controller.FileController
-import controller.SudokuController
-import fileReader.NxNFileReader
-import fileReader.SamuraiFileReader
 import io.github.shuoros.jterminal.JTerminal
 import java.io.File
 import javax.swing.JFileChooser

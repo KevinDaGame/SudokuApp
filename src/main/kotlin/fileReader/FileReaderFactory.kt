@@ -1,7 +1,7 @@
 package fileReader
 
 object FileReaderFactory {
-    private val registeredFileReaders: MutableMap<String,IFileReader> = mutableMapOf()
+    private val registeredFileReaders: MutableMap<String, IFileReader> = mutableMapOf()
 
     fun getFileReader(extension: String): IFileReader? {
         return registeredFileReaders[extension]

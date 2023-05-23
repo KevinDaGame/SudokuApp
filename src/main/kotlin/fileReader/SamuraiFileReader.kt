@@ -1,6 +1,9 @@
 package fileReader
 
-import model.*
+import model.CellValue
+import model.SudokuCell
+import model.SudokuModel
+import model.SudokuModelBuilder
 import java.io.File
 
 class SamuraiFileReader : IFileReader {

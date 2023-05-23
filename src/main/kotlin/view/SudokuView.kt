@@ -33,9 +33,10 @@ class SudokuView(private val controller: SudokuController) : IView {
 
     private fun showCursor(board: Array<Array<ConsoleChar>>) {
         for (dx in -1..1) {
-            for(dy in -1..1) {
-                if(dy == 0 && dx == 0) continue
-                board[y * 2 + 1 + dy][x * 2 + 1 + dx] = ConsoleChar(board[y * 2 + 1 + dy][x * 2 + 1 + dx].char, background = Color.RED)
+            for (dy in -1..1) {
+                if (dy == 0 && dx == 0) continue
+                board[y * 2 + 1 + dy][x * 2 + 1 + dx] =
+                    ConsoleChar(board[y * 2 + 1 + dy][x * 2 + 1 + dx].char, background = Color.RED)
 
             }
         }
@@ -49,7 +50,6 @@ class SudokuView(private val controller: SudokuController) : IView {
 
 
                 addBorders(cell, board, y, x)
-
 
 
             }

@@ -9,13 +9,6 @@ class SudokuView(private val controller: SudokuController) : IView {
     private var x: Int = 0
     private var y: Int = 0
 
-    init {
-        while (true) {
-            render()
-            getInput()
-        }
-    }
-
     override fun render() {
         printSudoku()
         println("x: $x, y: $y")
@@ -96,8 +89,7 @@ class SudokuView(private val controller: SudokuController) : IView {
         }
     }
 
-    fun getInput() {
-        val input = System.`in`.read().toChar()
+    override fun handleInput(input: Char) {
         println(input)
         //handle arrows
         when (input) {

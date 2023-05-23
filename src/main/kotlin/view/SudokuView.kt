@@ -11,12 +11,12 @@ class SudokuView(private val controller: SudokuController) : IView {
 
     override fun render() {
         printSudoku()
-        println("x: $x, y: $y")
+        JTerminal.println("x: $x, y: $y")
 
     }
 
     private fun printSudoku() {
-        println("\n".repeat(100)) // clear screen
+        JTerminal.println("\n".repeat(100)) // clear screen
 
         val viewModel = SudokuViewModel(controller.getBlocks(), controller.model.width, controller.model.height)
         val board = Array(viewModel.width * 2 + 1) { Array(viewModel.height * 2 + 1) { ConsoleChar() } }
@@ -85,12 +85,11 @@ class SudokuView(private val controller: SudokuController) : IView {
             for (cell in line) {
                 JTerminal.print(cell.char.toString(), cell.color, cell.background)
             }
-            println()
+            JTerminal.println("")
         }
     }
 
     override fun handleInput(input: Char) {
-        println(input)
         //handle arrows
         when (input) {
             'w' -> y--

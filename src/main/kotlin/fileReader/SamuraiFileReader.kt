@@ -20,7 +20,7 @@ class SamuraiFileReader : IFileReader {
             val grid = Array(9) { row ->
                 Array(9) { col ->
                     val index = row * 9 + col
-                    val value = CellValue(content[i][index].toString().toInt(), true)
+                    val value = CellValue(content[i][index].toString().toInt(), content[i][index].toString().toInt() > 0)
                     val cellCoords = Pair(startCoords.first + col, startCoords.second + row)
                     val cell = cells.getOrPut(cellCoords) {
                         SudokuCell(

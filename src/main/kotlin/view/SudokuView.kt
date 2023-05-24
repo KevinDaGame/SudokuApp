@@ -15,14 +15,13 @@ class SudokuView(private val controller: SudokuController) : IView {
 
     private fun printSudoku() {
         val viewModel = SudokuViewModel(controller.getBlocks(), controller.model.width, controller.model.height)
-        val board = Array(viewModel.width * 2 + 1) { Array(viewModel.height * 2 + 1) { ConsoleChar() } }
+        val board = Array(viewModel.width * 2 + 1) { Array(viewModel.height * 4 + 1) { ConsoleChar() } }
 
         for ((y, row) in viewModel.board.withIndex()) {
             printRow(board, y, row)
         }
 
         showCursor(board)
-
         for (line in board) {
             for (cell in line) {
                 JTerminal.print(cell.char.toString(), cell.color, cell.background)
@@ -32,25 +31,15 @@ class SudokuView(private val controller: SudokuController) : IView {
     }
 
     private fun showCursor(board: Array<Array<ConsoleChar>>) {
-        for (dx in -1..1) {
-            for (dy in -1..1) {
-                if (dy == 0 && dx == 0) continue
-                board[y * 2 + 1 + dy][x * 2 + 1 + dx] =
-                    ConsoleChar(board[y * 2 + 1 + dy][x * 2 + 1 + dx].char, background = Color.RED)
-
-            }
-        }
+        board[y * 2 + 1][x * 4 + 2] =
+            ConsoleChar(board[y * 2 + 1][x * 4 + 2].char, background = Color.RED)
     }
 
     private fun printRow(board: Array<Array<ConsoleChar>>, y: Int, row: Array<ViewSudokuCell?>) {
         for ((x, cell) in row.withIndex()) {
             if (cell != null) {
-                board[y * 2 + 1][x * 2 + 1] = ConsoleChar(cell.value.value.digitToChar())
-
-
-
+                board[y * 2 + 1][x * 4 + 2] = ConsoleChar(cell.value.value.digitToChar())
                 addBorders(cell, board, y, x)
-
 
             }
 
@@ -59,39 +48,33 @@ class SudokuView(private val controller: SudokuController) : IView {
     }
 
     private fun addBorders(cell: ViewSudokuCell, board: Array<Array<ConsoleChar>>, y: Int, x: Int) {
-        val horizontalBorder = ConsoleChar('-', Color.SILVER)
-        val verticalBorder = ConsoleChar('|', Color.SILVER)
+        val borderChar = ConsoleChar('█', Color.SILVER)
         for (border in cell.borders) {
             when (border) {
                 BorderDirection.UP -> {
-                    board[y * 2][x * 2 + 1] = horizontalBorder
-                    if (!cell.borders.contains(BorderDirection.RIGHT)) {
-                        board[y * 2][x * 2 + 2] = horizontalBorder
-                    }
+                    board[y * 2][x * 4] = borderChar
+                    board[y * 2][x * 4 + 1] = borderChar
+                    board[y * 2][x * 4 + 2] = borderChar
+                    board[y * 2][x * 4 + 3] = borderChar
                 }
 
                 BorderDirection.DOWN -> {
-                    board[y * 2 + 2][x * 2 + 1] = horizontalBorder
-                    if (!cell.borders.contains(BorderDirection.RIGHT)) {
-                        board[y * 2 + 2][x * 2 + 2] = horizontalBorder
-                    }
+                    board[y * 2 + 2][x * 4] = borderChar
+                    board[y * 2 + 2][x * 4 + 1] = borderChar
+                    board[y * 2 + 2][x * 4 + 2] = borderChar
+                    board[y * 2 + 2][x * 4 + 3] = borderChar
                 }
 
                 BorderDirection.LEFT -> {
-                    board[y * 2 + 1][x * 2] = verticalBorder
-                    board[y * 2 + 2][x * 2] = verticalBorder
-                    if (cell.borders.contains(BorderDirection.UP)) {
-                        board[y * 2][x * 2] = verticalBorder
-                    }
-
+                    board[y * 2][x * 4] = borderChar
+                    board[y * 2 + 1][x * 4] = borderChar
+                    board[y * 2 + 2][x * 4] = borderChar
                 }
 
                 BorderDirection.RIGHT -> {
-                    board[y * 2 + 1][x * 2 + 2] = verticalBorder
-                    board[y * 2 + 2][x * 2 + 2] = verticalBorder
-                    if (cell.borders.contains(BorderDirection.UP)) {
-                        board[y * 2][x * 2 + 2] = verticalBorder
-                    }
+                    board[y * 2][x * 4 + 4] = borderChar
+                    board[y * 2 + 1][x * 4 + 4] = borderChar
+                    board[y * 2 + 2][x * 4 + 4] = borderChar
                 }
             }
         }

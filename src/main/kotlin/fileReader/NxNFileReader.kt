@@ -35,7 +35,8 @@ class NxNFileReader(private val size: Int) : IFileReader {
         val grid = Array(size) { row ->
             Array(size) { col ->
                 val index = row * size + col
-                SudokuCell(CellValue(content[index].toString().toInt(), true), col, row)
+                val value = content[index].digitToInt()
+                SudokuCell(CellValue(value, value > 0), col, row)
             }
         }
 

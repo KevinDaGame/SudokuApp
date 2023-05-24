@@ -69,7 +69,7 @@ interface IFileReader {
                 val block = mutableListOf<SudokuCell>()
                 for (k in 1..blockWidth) {
                     for (l in 1..blockHeight) {
-                        block.add(sudoku[(i - 1) * blockWidth + k - 1][(j - 1) * blockHeight + l - 1])
+                        block.add(sudoku[(j - 1) * blockHeight + l - 1][(i - 1) * blockWidth + k - 1])
                     }
                 }
                 groups.add(SudokuBlock(block))

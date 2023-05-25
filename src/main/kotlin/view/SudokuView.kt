@@ -6,6 +6,8 @@ import io.github.shuoros.jterminal.ansi.Color
 import model.BorderDirection
 import model.CellState
 import model.SudokuCell
+import java.lang.Integer.max
+import java.lang.Integer.min
 
 class SudokuView(private val controller: SudokuController) : IView {
     private var x: Int = 0
@@ -150,20 +152,20 @@ class SudokuView(private val controller: SudokuController) : IView {
         //handle arrows
         when (input) {
             'w' -> {
-                y--
+                y = max(0, y - 1)
                 return true
             }
             'a' -> {
-                x--
+                x = max(0, x - 1)
                 return true
             }
             's' -> {
-                y++
+                y = min(controller.model.height - 1, y + 1)
                 return true
             }
 
             'd' -> {
-                x++
+                x = min(controller.model.width - 1, x + 1)
                 return true
             }
 

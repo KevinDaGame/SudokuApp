@@ -9,9 +9,11 @@ class ViewManager private constructor(var activeView: IView = MainView()) {
         while (true) {
             flushView()
             activeView.render()
-            activeView.handleInput(scanner.next().first())
+            val input = scanner.nextLine()
 
-
+            for (char in input) {
+                if (!activeView.handleInput(char)) break
+            }
         }
     }
 

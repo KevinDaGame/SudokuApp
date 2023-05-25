@@ -8,6 +8,7 @@ import model.BorderDirection
 class SudokuView(private val controller: SudokuController) : IView {
     private var x: Int = 0
     private var y: Int = 0
+    private var editorMode: Editormode = Editormode.DEFINITIVE
 
     override fun render() {
         printSudoku()
@@ -30,11 +31,6 @@ class SudokuView(private val controller: SudokuController) : IView {
         }
     }
 
-    private fun showCursor(board: Array<Array<ConsoleChar>>) {
-        board[y * 2 + 1][x * 4 + 2] =
-            ConsoleChar(board[y * 2 + 1][x * 4 + 2].char, background = Color.RED)
-    }
-
     private fun printRow(board: Array<Array<ConsoleChar>>, y: Int, row: Array<ViewSudokuCell?>) {
         for ((x, cell) in row.withIndex()) {
             if (cell != null) {
@@ -48,7 +44,7 @@ class SudokuView(private val controller: SudokuController) : IView {
     }
 
     private fun addBorders(cell: ViewSudokuCell, board: Array<Array<ConsoleChar>>, y: Int, x: Int) {
-        val borderChar = ConsoleChar('█', Color.SILVER)
+        val borderChar = ConsoleChar('█', if (editorMode == Editormode.DEFINITIVE) Color.WHITE else Color.SILVER)
         for (border in cell.borders) {
             when (border) {
                 BorderDirection.UP -> {
@@ -80,18 +76,40 @@ class SudokuView(private val controller: SudokuController) : IView {
         }
     }
 
-    override fun handleInput(input: Char) {
+    private fun showCursor(board: Array<Array<ConsoleChar>>) {
+        board[y * 2 + 1][x * 4 + 2] =
+            ConsoleChar(board[y * 2 + 1][x * 4 + 2].char, background = Color.RED)
+    }
+
+    override fun handleInput(input: Char): Boolean {
         //handle arrows
         when (input) {
-            'w' -> y--
-            'a' -> x--
-            's' -> y++
-            'd' -> x++
+            'w' -> {
+                y--
+                return true
+            }
+            'a' -> {
+                x--
+                return true
+            }
+            's' -> {
+                y++
+                return true
+            }
+            'd' -> {
+                x++
+                return true
+            }
+            ' ' -> {
+                editorMode = editorMode.getNext()
+                return false
+            }
             else -> {
                 val value = input.toString().toIntOrNull()
                 if (value != null) {
                     controller.setCellValue(x, y, value)
                 }
+                return false
             }
         }
     }

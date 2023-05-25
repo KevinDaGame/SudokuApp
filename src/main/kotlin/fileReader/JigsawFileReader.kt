@@ -21,8 +21,8 @@ class JigsawFileReader : IFileReader {
             Array(9) { col ->
                 val index = row * 9 + col
                 val value = fields[index][0].digitToInt()
-                val cell = SudokuCell(CellValue(value, value > 0), col, row)
-                blocks[fields[index][2].digitToInt()]?.add(SudokuCell(CellValue(value, true), col, row))
+                val cell = getCell(value, col, row)
+                blocks[fields[index][2].digitToInt()]?.add(cell)
                 cell
 
 

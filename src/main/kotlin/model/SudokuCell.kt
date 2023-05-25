@@ -14,7 +14,7 @@ class SudokuCell(var value: CellValue, val x: Int, val y: Int) : ICheckable {
     }
 
     private fun isDefinitiveAndFilled(): Boolean {
-        return value.value != 0 && value.isDefinitive
+        return value.value != 0 && (value.state == CellState.DEFINITIVE || value.state == CellState.PROVIDED)
     }
 
     override fun toString(): String {

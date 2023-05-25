@@ -1,9 +1,6 @@
 package fileReader
 
-import model.SudokuBlock
-import model.SudokuCell
-import model.SudokuGroup
-import model.SudokuModel
+import model.*
 import java.io.File
 import java.util.*
 
@@ -76,7 +73,10 @@ interface IFileReader {
             }
         }
         return groups
+    }
 
+    fun getCell(value: Int, col: Int, row: Int): SudokuCell {
+        return SudokuCell(CellValue(value, if(value == 0) CellState.EMPTY else CellState.PROVIDED), col, row)
     }
 
 

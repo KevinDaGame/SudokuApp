@@ -1,10 +1,10 @@
 package view
 
-enum class Editormode {
+enum class EditorMode {
     DEFINITIVE,
     PENCIL;
 
-    fun getNext(): Editormode {
+    fun getNext(): EditorMode {
         return when (this) {
             DEFINITIVE -> PENCIL
             PENCIL -> DEFINITIVE

@@ -1,6 +1,9 @@
 package fileReader
 
-import model.*
+import model.CellValue
+import model.SudokuCell
+import model.SudokuModel
+import model.SudokuModelBuilder
 import java.io.File
 
 class SamuraiFileReader : IFileReader {
@@ -17,7 +20,7 @@ class SamuraiFileReader : IFileReader {
             val grid = Array(9) { row ->
                 Array(9) { col ->
                     val index = row * 9 + col
-                    val value = CellValue(content[i][index].toString().toInt(), true)
+                    val value = CellValue(content[i][index].toString().toInt(), content[i][index].toString().toInt() > 0)
                     val cellCoords = Pair(startCoords.first + col, startCoords.second + row)
                     val cell = cells.getOrPut(cellCoords) {
                         SudokuCell(
@@ -58,5 +61,11 @@ class SamuraiFileReader : IFileReader {
             4 -> return Pair(12, 12)
         }
         throw IllegalArgumentException("Invalid index")
+    }
+
+    companion object {
+        fun register() {
+            FileReaderFactory.registerFileReader(SamuraiFileReader(), "samurai")
+        }
     }
 }

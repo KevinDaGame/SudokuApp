@@ -1,6 +1,6 @@
 package model
 
-class SudokuCell(var value: CellValue, val x: Int, val y: Int): ICheckable {
+class SudokuCell(var value: CellValue, val x: Int, val y: Int) : ICheckable {
     override fun isSolved(): Boolean {
         return isDefinitiveAndFilled()
 

@@ -1,6 +1,9 @@
 package fileReader
 
-import model.*
+import model.CellValue
+import model.SudokuCell
+import model.SudokuModel
+import model.SudokuModelBuilder
 import java.io.File
 
 class NxNFileReader(private val size: Int) : IFileReader {
@@ -32,7 +35,8 @@ class NxNFileReader(private val size: Int) : IFileReader {
         val grid = Array(size) { row ->
             Array(size) { col ->
                 val index = row * size + col
-                SudokuCell(CellValue(content[index].toString().toInt(), true), col, row)
+                val value = content[index].digitToInt()
+                SudokuCell(CellValue(value, value > 0), col, row)
             }
         }
 
@@ -41,5 +45,13 @@ class NxNFileReader(private val size: Int) : IFileReader {
         builder.addGroups(createBlocks(grid, calcBlockWidth(), calcBlockHeight()))
 
         return builder.build()
+    }
+
+    companion object {
+        fun register() {
+            FileReaderFactory.registerFileReader(NxNFileReader(4), "4x4")
+            FileReaderFactory.registerFileReader(NxNFileReader(6), "6x6")
+            FileReaderFactory.registerFileReader(NxNFileReader(9), "9x9")
+        }
     }
 }

@@ -20,7 +20,28 @@ class SudokuView(private val controller: SudokuController) : IView {
     }
 
     private fun showInfoText() {
-        println("Controls: w: up, a: left, s: down, d: right, space: toggle editor mode, c: toggle invalid cells, p: toggle pencil mode, [0-9]: set cell value")
+        JTerminal.println("Controls: w: up, a: left, s: down, d: right, space: toggle editor mode, c: toggle invalid cells, p: toggle pencil mode, [0-9]: set cell value, q: return to sudoku selection")
+
+        JTerminal.print("Editor mode: ")
+        JTerminal.println(editorMode.toString(), Color.YELLOW)
+
+        JTerminal.print("Invalid cells: ")
+        JTerminal.println(if (showInvalidCells) "shown" else "hidden", Color.YELLOW)
+
+        JTerminal.print("Pencil mode: ")
+        JTerminal.println(if (showPencil) "shown" else "hidden", Color.YELLOW)
+
+        JTerminal.print("Colors: ")
+        JTerminal.print("definitive", Color.WHITE)
+        JTerminal.print(", ")
+        JTerminal.print("provided", Color.YELLOW)
+        JTerminal.print(", ")
+        JTerminal.print("pencil", Color.BLUE)
+        JTerminal.print(", ")
+        JTerminal.print("invalid", Color.RED)
+        JTerminal.print(", ")
+        JTerminal.println("cursor", Color.GREEN)
+
     }
 
     private fun printSudoku() {
@@ -157,6 +178,10 @@ class SudokuView(private val controller: SudokuController) : IView {
             }
             'p' -> {
                 showPencil = !showPencil
+                return false
+            }
+            'q' -> {
+                ViewManager.instance.activeView = FileView()
                 return false
             }
 

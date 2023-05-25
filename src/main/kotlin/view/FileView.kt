@@ -11,7 +11,7 @@ class FileView : IView {
     private val PUZZLE_DIR = System.getProperty("user.dir") + "\\src\\main\\resources\\puzzles"
     override fun render() {
         JTerminal.println(
-            "Open a sudoku\n" +
+            "Choose a sudoku\n" +
                     "0: Open a file\n" +
                     "1: Open standard sudoku(dev only)\n" +
                     "2: Samurai(dev only)\n" +

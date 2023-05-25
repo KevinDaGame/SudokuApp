@@ -12,9 +12,15 @@ class SudokuView(private val controller: SudokuController) : IView {
     private var y: Int = 0
     private var editorMode: EditorMode = EditorMode.DEFINITIVE
     private var showInvalidCells: Boolean = false
+    private var showPencil: Boolean = false
 
     override fun render() {
         printSudoku()
+        showInfoText()
+    }
+
+    private fun showInfoText() {
+        println("Controls: w: up, a: left, s: down, d: right, space: toggle editor mode, c: toggle invalid cells, p: toggle pencil mode, [0-9]: set cell value")
     }
 
     private fun printSudoku() {
@@ -54,7 +60,7 @@ class SudokuView(private val controller: SudokuController) : IView {
     }
 
     private fun getCellChar(cell: ViewSudokuCell, isInvalid: Boolean): ConsoleChar {
-        val value = if (cell.value.value > 0) cell.value.value.digitToChar() else '_'
+        val value = getDisplayValue(cell)
         var foreground = when (cell.value.state) {
             CellState.EMPTY -> Color.WHITE
             CellState.DEFINITIVE -> Color.WHITE
@@ -63,6 +69,22 @@ class SudokuView(private val controller: SudokuController) : IView {
         }
         if (isInvalid) foreground = Color.RED
         return ConsoleChar(value, foreground)
+    }
+
+    private fun getDisplayValue(cell: ViewSudokuCell): Char {
+        return when(cell.value.state) {
+            CellState.EMPTY -> '_'
+            CellState.DEFINITIVE -> cell.value.value.digitToChar()
+            CellState.PROVIDED -> cell.value.value.digitToChar()
+            CellState.PENCIL -> {
+                if (showPencil) {
+                    cell.value.value.digitToChar()
+                } else {
+                    '_'
+                }
+            }
+        }
+
     }
 
     private fun addBorders(cell: ViewSudokuCell, board: Array<Array<ConsoleChar>>, y: Int, x: Int) {
@@ -131,6 +153,10 @@ class SudokuView(private val controller: SudokuController) : IView {
 
             'c' -> {
                 showInvalidCells = !showInvalidCells
+                return false
+            }
+            'p' -> {
+                showPencil = !showPencil
                 return false
             }
 

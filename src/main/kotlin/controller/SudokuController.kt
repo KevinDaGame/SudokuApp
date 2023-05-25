@@ -8,7 +8,9 @@ class SudokuController(val model: SudokuModel) : Controller {
     }
 
     fun setCellValue(x: Int, y: Int, value: Int, state: CellState) {
-        model.sudokuGroups.flatMap { it.cells }.first { it.x == x && it.y == y }.value = CellValue(value, state)
+        val cell = model.sudokuGroups.flatMap { it.cells }.first { it.x == x && it.y == y }
+        if (cell.value.state == CellState.PROVIDED) return
+        cell.value = CellValue(value, state)
     }
 
     fun getInvalidCells(): List<SudokuCell> {

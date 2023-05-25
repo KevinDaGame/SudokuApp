@@ -11,7 +11,13 @@ import java.lang.Integer.min
 
 class SudokuView(private val controller: SudokuController) : IView {
     private var x: Int = 0
+        set(value) {
+            field = min(max(value, 0), controller.model.width - 1)
+        }
     private var y: Int = 0
+        set(value) {
+            field = min(max(value, 0), controller.model.height - 1)
+        }
     private var editorMode: EditorMode = EditorMode.DEFINITIVE
     private var showInvalidCells: Boolean = false
     private var showPencil: Boolean = false
@@ -152,20 +158,20 @@ class SudokuView(private val controller: SudokuController) : IView {
         //handle arrows
         when (input) {
             'w' -> {
-                y = max(0, y - 1)
+                y--
                 return true
             }
             'a' -> {
-                x = max(0, x - 1)
+                x--
                 return true
             }
             's' -> {
-                y = min(controller.model.height - 1, y + 1)
+                y++
                 return true
             }
 
             'd' -> {
-                x = min(controller.model.width - 1, x + 1)
+                x++
                 return true
             }
 

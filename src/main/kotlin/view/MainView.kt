@@ -23,13 +23,12 @@ class MainView : IView {
         )
     }
 
-    override fun handleInput(input: Char) {
-        val value = input.toString().toIntOrNull()
-        when (value) {
+    override fun handleInput(input: Char): Boolean {
+        when (input.toString().toIntOrNull()) {
             0 -> openFilePicker()
             1 -> System.exit(0)
-            null -> return
         }
+        return false
     }
 
     private fun openFilePicker() {

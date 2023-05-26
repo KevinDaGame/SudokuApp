@@ -1,9 +1,6 @@
 package fileReader
 
-import model.CellValue
-import model.SudokuCell
-import model.SudokuModel
-import model.SudokuModelBuilder
+import model.*
 import java.io.File
 
 class SamuraiFileReader : IFileReader {
@@ -20,19 +17,16 @@ class SamuraiFileReader : IFileReader {
             val grid = Array(9) { row ->
                 Array(9) { col ->
                     val index = row * 9 + col
-                    val value = CellValue(content[i][index].toString().toInt(), content[i][index].toString().toInt() > 0)
+                    val value = content[i][index].digitToInt()
                     val cellCoords = Pair(startCoords.first + col, startCoords.second + row)
                     val cell = cells.getOrPut(cellCoords) {
-                        SudokuCell(
-                            value,
-                            cellCoords.first,
-                            cellCoords.second
-                        )
+                        getCell(value, cellCoords.first, cellCoords.second)
                     }
 
                     //overwrite if previous is 0 and current is not 0
-                    if (cell.value.value == 0 && value.value != 0) {
-                        cell.value = value
+                    if (cell.value.value == 0 && value != 0) {
+                        cell.value = CellValue(value, CellState.PROVIDED)
+
                     }
                     cell
                 }

@@ -11,7 +11,7 @@ class SudokuGroupTest {
         // Arrange
         val correctCells = mutableListOf<SudokuCell>()
         for (i in 1..9) {
-            correctCells.add(SudokuCell(CellValue(i, true), 0, 0))
+            correctCells.add(SudokuCell(CellValue(i, CellState.DEFINITIVE), 0, 0))
         }
         val validGroup = SudokuGroup(correctCells)
         // Act
@@ -26,9 +26,9 @@ class SudokuGroupTest {
         // Arrange
         val incorrectCells = mutableListOf<SudokuCell>()
         for (i in 1..8) {
-            incorrectCells.add(SudokuCell(CellValue(i, true), 0, 0))
+            incorrectCells.add(SudokuCell(CellValue(i, CellState.DEFINITIVE), 0, 0))
         }
-        incorrectCells.add(SudokuCell(CellValue(8, true), 0, 0))
+        incorrectCells.add(SudokuCell(CellValue(8, CellState.DEFINITIVE), 0, 0))
         val invalidGroup = SudokuGroup(incorrectCells)
         // Act
         val invalidGroupResult = invalidGroup.isSolved()
@@ -42,9 +42,9 @@ class SudokuGroupTest {
         // Arrange
         val incompleteCells = mutableListOf<SudokuCell>()
         for (i in 1..8) {
-            incompleteCells.add(SudokuCell(CellValue(i, true), 0, 0))
+            incompleteCells.add(SudokuCell(CellValue(i, CellState.DEFINITIVE), 0, 0))
         }
-        incompleteCells.add(SudokuCell(CellValue(0, true), 0, 0))
+        incompleteCells.add(SudokuCell(CellValue(0, CellState.DEFINITIVE), 0, 0))
         val incompleteGroup = SudokuGroup(incompleteCells)
         // Act
         val incompleteGroupResult = incompleteGroup.isSolved()
@@ -58,9 +58,9 @@ class SudokuGroupTest {
         // Arrange
         val temporaryCells = mutableListOf<SudokuCell>()
         for (i in 1..8) {
-            temporaryCells.add(SudokuCell(CellValue(i, true), 0, 0))
+            temporaryCells.add(SudokuCell(CellValue(i, CellState.DEFINITIVE), 0, 0))
         }
-        temporaryCells.add(SudokuCell(CellValue(9, false), 0, 0))
+        temporaryCells.add(SudokuCell(CellValue(9, CellState.PENCIL), 0, 0))
         val temporaryGroup = SudokuGroup(temporaryCells)
         // Act
         val temporaryGroupResult = temporaryGroup.isSolved()
@@ -74,7 +74,7 @@ class SudokuGroupTest {
         //Arrange
         val correctCells = mutableListOf<SudokuCell>()
         for (i in 1..9) {
-            correctCells.add(SudokuCell(CellValue(i, true), 0, 0))
+            correctCells.add(SudokuCell(CellValue(i, CellState.DEFINITIVE), 0, 0))
         }
 
         val validGroup = SudokuGroup(correctCells)
@@ -91,9 +91,9 @@ class SudokuGroupTest {
         //Arrange
         val invalidCells = mutableListOf<SudokuCell>()
         for (i in 1..8) {
-            invalidCells.add(SudokuCell(CellValue(i, true), 0, 0))
+            invalidCells.add(SudokuCell(CellValue(i, CellState.DEFINITIVE), 0, 0))
         }
-        invalidCells.add(SudokuCell(CellValue(8, true), 0, 0))
+        invalidCells.add(SudokuCell(CellValue(8, CellState.DEFINITIVE), 0, 0))
 
         val invalidGroup = SudokuGroup(invalidCells)
         //Act

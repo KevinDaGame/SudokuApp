@@ -23,8 +23,13 @@ class SudokuView(private val controller: SudokuController) : IView {
     private var showPencil: Boolean = false
 
     override fun render() {
+        if(!controller.model.isSolved()) {
         printSudoku()
         showInfoText()
+        }
+        else {
+            ViewManager.instance.activeView = SudokuSolvedView()
+        }
     }
 
     private fun showInfoText() {

@@ -6,6 +6,7 @@ import io.github.shuoros.jterminal.ansi.Color
 import model.BorderDirection
 import model.CellState
 import model.SudokuCell
+import model.visitor.SolveSudokuVisitor
 import java.lang.Integer.max
 import java.lang.Integer.min
 
@@ -23,17 +24,49 @@ class SudokuView(private val controller: SudokuController) : IView {
     private var showPencil: Boolean = false
 
     override fun render() {
-        if(!controller.model.isSolved()) {
         printSudoku()
-        showInfoText()
-        }
-        else {
-            ViewManager.instance.activeView = SudokuSolvedView()
+        if (!controller.model.isSolved()) {
+            showInfoText()
+        } else {
+            showSolvedView()
         }
     }
 
+    private fun showSolvedView() {
+        val lines = listOf(
+            //region lines
+
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⢀⣶⣿⣿⣿⣿⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⢀⣿⣿⣿⠿⠟⠛⠻⣿⠆⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣆⣀⣀⠀⣿⠂⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⢸⠻⣿⣿⣿⠅⠛⠋⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠘⢼⣿⣿⣿⣃⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣟⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⠀⠀⠀⠀⠀⠀⣛⣛⣫⡄⠀⢸⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀",
+            "⠀⠀⠀⢀⣠⣴⣾⡆⠸⣿⣿⣿⡷⠂⠨⣿⣿⣿⣿⣶⣦⣤⣀⠀⠀",
+            "⠀⣤⣾⣿⣿⣿⣿⡇⢀⣿⡿⠋⠁⢀⡶⠪⣉⢸⣿⣿⣿⣿⣿⣇⠀",
+            "⢀⣿⣿⣿⣿⣿⣿⣿⣿⡏⢸⣿⣷⣿⣿⣷⣦⡙⣿⣿⣿⣿⣿⡏⠀",
+            "⠈⣿⣿⣿⣿⣿⣿⣿⣿⣇⢸⣿⣿⣿⣿⣿⣷⣦⣿⣿⣿⣿⣿⡇⠀",
+            "⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀",
+            "⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣄",
+            "⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+            "⣠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿",
+            "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃",
+            "⢹⣿⣵⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⡁⠀"
+            //endregion
+        )
+
+
+        for (line in lines) {
+            Thread.sleep(100)
+            JTerminal.println(line)
+        }
+        JTerminal.println("You did it! press 1 to return to menu")
+    }
+
     private fun showInfoText() {
-        JTerminal.println("Controls: w: up, a: left, s: down, d: right, space: toggle editor mode, c: toggle invalid cells, p: toggle pencil mode, [0-9]: set cell value, q: return to sudoku selection")
+        JTerminal.println("Controls: w: up, a: left, s: down, d: right, space: toggle editor mode, c: toggle invalid cells, p: toggle pencil mode, [0-9]: set cell value, q: return to sudoku selection, o: Solve sudoku")
 
         JTerminal.print("Editor mode: ")
         JTerminal.println(editorMode.toString(), Color.YELLOW)
@@ -84,7 +117,7 @@ class SudokuView(private val controller: SudokuController) : IView {
         for ((x, cell) in row.withIndex()) {
             if (cell != null) {
                 board[y * 2 + 1][x * 4 + 2] =
-                    getCellChar(cell, invalidCells.filter { it.x == x && it.y == y }.isNotEmpty())
+                    getCellChar(cell, invalidCells.any { it.x == x && it.y == y })
                 addBorders(cell, board, y, x)
 
             }
@@ -106,7 +139,7 @@ class SudokuView(private val controller: SudokuController) : IView {
     }
 
     private fun getDisplayValue(cell: ViewSudokuCell): Char {
-        return when(cell.value.state) {
+        return when (cell.value.state) {
             CellState.EMPTY -> '_'
             CellState.DEFINITIVE -> cell.value.value.digitToChar()
             CellState.PROVIDED -> cell.value.value.digitToChar()
@@ -161,15 +194,23 @@ class SudokuView(private val controller: SudokuController) : IView {
 
     override fun handleInput(input: Char): Boolean {
         //handle arrows
+        if(controller.model.isSolved()) {
+            if(input == '1') {
+                ViewManager.instance.activeView = MainView()
+            }
+            return false
+        }
         when (input) {
             'w' -> {
                 y--
                 return true
             }
+
             'a' -> {
                 x--
                 return true
             }
+
             's' -> {
                 y++
                 return true
@@ -189,18 +230,29 @@ class SudokuView(private val controller: SudokuController) : IView {
                 showInvalidCells = !showInvalidCells
                 return false
             }
+
             'p' -> {
                 showPencil = !showPencil
                 return false
             }
+
             'q' -> {
                 ViewManager.instance.activeView = FileView()
+                return false
+            }
+            'o' -> {
+                val visitor = SolveSudokuVisitor()
+                controller.model.accept(visitor)
+                return false
+            }
+            '0' -> {
+                controller.setCellValue(x, y, 0, CellState.EMPTY)
                 return false
             }
 
             else -> {
                 val value = input.toString().toIntOrNull()
-                if (value != null) {
+                if (value != null && input.toString()[0] in controller.model.validCharacters) {
                     controller.setCellValue(
                         x,
                         y,

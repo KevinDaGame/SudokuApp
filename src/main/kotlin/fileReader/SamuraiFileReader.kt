@@ -8,6 +8,7 @@ class SamuraiFileReader : IFileReader {
         val builder = SudokuModelBuilder()
         builder.height(21)
         builder.width(21)
+        builder.addValidCharacters(('1'.. '9').toSet())
         val content = readFile(file).chunked(81)
 
         val grids = mutableListOf<Array<Array<SudokuCell>>>()

@@ -1,6 +1,8 @@
 package model
 
-class SudokuModel(val sudokuGroups: List<SudokuGroup>, val height: Int, val width: Int) : ICheckable {
+import model.visitor.IVisitor
+
+class SudokuModel(val sudokuGroups: List<SudokuGroup>, val validCharacters: Set<Char>, val height: Int, val width: Int) : ICheckable {
     override fun isSolved(): Boolean {
         return sudokuGroups.all { it.isSolved() }
     }
@@ -11,5 +13,9 @@ class SudokuModel(val sudokuGroups: List<SudokuGroup>, val height: Int, val widt
             invalidCells.addAll(group.getInvalidCells())
         }
         return invalidCells.distinct()
+    }
+
+    fun accept(visitor: IVisitor) {
+        visitor.visit(this)
     }
 }

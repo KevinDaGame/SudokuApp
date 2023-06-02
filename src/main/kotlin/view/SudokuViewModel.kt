@@ -19,8 +19,6 @@ class SudokuViewModel(blocks: List<SudokuBlock>, val width: Int, val height: Int
 }
 
 data class ViewSudokuCell(val sudokuCell: SudokuCell, val borders: List<BorderDirection>) {
-    val x get() = sudokuCell.x
-    val y get() = sudokuCell.y
     val value get() = sudokuCell.value
 
 }

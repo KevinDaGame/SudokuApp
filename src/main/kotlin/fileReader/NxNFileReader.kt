@@ -1,7 +1,5 @@
 package fileReader
 
-import model.CellValue
-import model.SudokuCell
 import model.SudokuModel
 import model.SudokuModelBuilder
 import java.io.File

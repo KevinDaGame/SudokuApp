@@ -8,7 +8,7 @@ import javax.swing.JFileChooser
 
 class FileView : IView {
     private val controller: FileController = FileController()
-    private val PUZZLE_DIR = System.getProperty("user.dir") + "\\src\\main\\resources\\puzzles"
+    private val puzzleDir = System.getProperty("user.dir") + "\\src\\main\\resources\\puzzles"
     override fun render() {
         JTerminal.println(
             "Choose a sudoku\n" +
@@ -33,26 +33,26 @@ class FileView : IView {
 
             '1' -> {
                 val file =
-                    File("$PUZZLE_DIR\\puzzle.9x9")
+                    File("$puzzleDir\\puzzle.9x9")
                 controller.openSudoku(file)
             }
 
             '2' -> {
                 val file =
-                    File("$PUZZLE_DIR\\puzzle.samurai")
+                    File("$puzzleDir\\puzzle.samurai")
                 controller.openSudoku(file)
             }
 
             '3' -> {
-                val file = File("$PUZZLE_DIR\\puzzle.jigsaw")
+                val file = File("$puzzleDir\\puzzle.jigsaw")
                 controller.openSudoku(file)
             }
             '4' -> {
-                val file = File("$PUZZLE_DIR\\puzzle.4x4")
+                val file = File("$puzzleDir\\puzzle.4x4")
                 controller.openSudoku(file)
             }
             '5' -> {
-                val file = File("$PUZZLE_DIR\\puzzle.6x6")
+                val file = File("$puzzleDir\\puzzle.6x6")
                 controller.openSudoku(file)
             }
             '6' -> ViewManager.instance.activeView = MainView()

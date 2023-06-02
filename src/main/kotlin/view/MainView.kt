@@ -2,6 +2,7 @@ package view
 
 import io.github.shuoros.jterminal.JTerminal
 import io.github.shuoros.jterminal.ansi.Color
+import kotlin.system.exitProcess
 
 class MainView : IView {
 
@@ -18,7 +19,7 @@ class MainView : IView {
 
         JTerminal.println(
             "Please make a choice:\n" +
-                    "0: Choose a soduku\n" +
+                    "0: Choose a sudoku\n" +
                     "1: Exit"
         )
     }
@@ -26,7 +27,7 @@ class MainView : IView {
     override fun handleInput(input: Char): Boolean {
         when (input.toString().toIntOrNull()) {
             0 -> openFilePicker()
-            1 -> System.exit(0)
+            1 -> exitProcess(0)
         }
         return false
     }

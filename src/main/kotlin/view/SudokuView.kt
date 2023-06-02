@@ -33,7 +33,7 @@ class SudokuView(private val controller: SudokuController) : IView {
     }
 
     private fun showSolvedView() {
-        val LINES = listOf(
+        val lines = listOf(
             //region lines
 
             "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
@@ -58,7 +58,7 @@ class SudokuView(private val controller: SudokuController) : IView {
         )
 
 
-        for (line in LINES) {
+        for (line in lines) {
             Thread.sleep(100)
             JTerminal.println(line)
         }
@@ -117,7 +117,7 @@ class SudokuView(private val controller: SudokuController) : IView {
         for ((x, cell) in row.withIndex()) {
             if (cell != null) {
                 board[y * 2 + 1][x * 4 + 2] =
-                    getCellChar(cell, invalidCells.filter { it.x == x && it.y == y }.isNotEmpty())
+                    getCellChar(cell, invalidCells.any { it.x == x && it.y == y })
                 addBorders(cell, board, y, x)
 
             }

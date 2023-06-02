@@ -8,6 +8,7 @@ class JigsawFileReader : IFileReader {
         val builder = SudokuModelBuilder()
         builder.height(9)
         builder.width(9)
+        builder.addValidCharacters(('1'.. '9').toSet())
 
         val content = readFile(file).replace("SumoCueV1=", "")
         val fields = content.split("=")

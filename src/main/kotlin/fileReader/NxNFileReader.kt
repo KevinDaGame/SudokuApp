@@ -27,6 +27,7 @@ class NxNFileReader(private val size: Int) : IFileReader {
         val builder = SudokuModelBuilder()
         builder.height(size)
         builder.width(size)
+        builder.addValidCharacters(('1'.. size.digitToChar()).toSet())
 
         val content = readFile(file)
 

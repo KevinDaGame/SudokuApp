@@ -245,10 +245,14 @@ class SudokuView(private val controller: SudokuController) : IView {
                 controller.model.accept(visitor)
                 return false
             }
+            '0' -> {
+                controller.setCellValue(x, y, 0, CellState.EMPTY)
+                return false
+            }
 
             else -> {
                 val value = input.toString().toIntOrNull()
-                if (value != null) {
+                if (value != null && input.toString()[0] in controller.model.validCharacters) {
                     controller.setCellValue(
                         x,
                         y,

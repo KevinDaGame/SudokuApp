@@ -2,7 +2,7 @@ package model
 
 import model.visitor.IVisitor
 
-class SudokuModel(val sudokuGroups: List<SudokuGroup>, val height: Int, val width: Int) : ICheckable {
+class SudokuModel(val sudokuGroups: List<SudokuGroup>, val validCharacters: Set<Char>, val height: Int, val width: Int) : ICheckable {
     override fun isSolved(): Boolean {
         return sudokuGroups.all { it.isSolved() }
     }

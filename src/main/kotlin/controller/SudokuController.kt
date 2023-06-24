@@ -8,6 +8,15 @@ class SudokuController(val model: SudokuModel) : Controller {
     }
 
     fun setCellValue(x: Int, y: Int, value: Int, state: CellState) {
+        try {
+            if(value.digitToChar() !in model.validCharacters) return
+        }
+        catch (e: IllegalArgumentException) {
+            return
+        }
+
+        if(state == CellState.PROVIDED) return
+
         val cell = model.sudokuGroups.flatMap { it.cells }.first { it.x == x && it.y == y }
         if (cell.value.state == CellState.PROVIDED) return
         if (cell.value.value == value || value == 0) cell.value = CellValue(0, CellState.EMPTY)

@@ -10,7 +10,7 @@ class SudokuViewModel(blocks: List<SudokuBlock>, val width: Int, val height: Int
     init {
         val constructBoard = Array(height) { arrayOfNulls<ViewSudokuCell>(width) }
         for (block in blocks) {
-            for (cell in block.cells) {
+            for (cell in block.getCells()) {
                 constructBoard[cell.y][cell.x] = ViewSudokuCell(cell, block.getBorders(cell.x, cell.y))
             }
         }

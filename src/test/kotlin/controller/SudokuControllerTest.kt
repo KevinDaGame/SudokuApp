@@ -11,7 +11,7 @@ class SudokuControllerTest {
     fun getBlocks() {
         // Arrange
         val model = getValidModel()
-        val expectedBlocks = model.sudokuGroups.filterIsInstance<SudokuBlock>()
+        val expectedBlocks = model.children.filterIsInstance<SudokuBlock>()
         val controller = SudokuController(model)
         //Act
         val blocks = controller.getBlocks()
@@ -28,7 +28,7 @@ class SudokuControllerTest {
         val newValue = 9
         controller.setCellValue(0,0, newValue, CellState.DEFINITIVE)
         //Assert
-        assertEquals(newValue, controller.model.sudokuGroups.flatMap { it.cells }.filter {it.x == 0 && it.y == 0}.first().value.value)
+        assertEquals(newValue, controller.model.children.flatMap { it.getCells() }.first { it.x == 0 && it.y == 0 }.value.value)
     }
 
     @Test
@@ -40,7 +40,7 @@ class SudokuControllerTest {
         val newValue = 11
         controller.setCellValue(0,0, newValue, CellState.DEFINITIVE)
         //Assert
-        assertNotEquals(newValue, controller.model.sudokuGroups.flatMap { it.cells }.filter {it.x == 0 && it.y == 0}.first().value.value)
+        assertNotEquals(newValue, controller.model.children.flatMap { it.getCells() }.first { it.x == 0 && it.y == 0 }.value.value)
     }
 
     @Test
@@ -52,7 +52,7 @@ class SudokuControllerTest {
         val newValue = 9
         controller.setCellValue(0,0, newValue, CellState.PROVIDED)
         //Assert
-        assertNotEquals(newValue, controller.model.sudokuGroups.flatMap { it.cells }.filter {it.x == 0 && it.y == 0}.first().value.value)
+        assertNotEquals(newValue, controller.model.children.flatMap { it.getCells() }.first { it.x == 0 && it.y == 0 }.value.value)
     }
     @Test
     fun getInvalidCells() {

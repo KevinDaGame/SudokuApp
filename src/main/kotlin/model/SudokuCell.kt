@@ -6,6 +6,10 @@ class SudokuCell(var value: CellValue, val x: Int, val y: Int) : ICheckable {
 
     }
 
+    override fun getCells(): List<SudokuCell> {
+        return listOf(this)
+    }
+
     override fun getInvalidCells(): List<SudokuCell> {
         if (isDefinitiveAndFilled()) {
             return listOf(this)

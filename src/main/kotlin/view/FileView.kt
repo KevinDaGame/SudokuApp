@@ -71,6 +71,6 @@ class FileView : IView {
     }
 
     companion object {
-        private val PUZZLE_DIR = "System.getProperty(\"user.dir\") + \"\\\\src\\\\main\\\\resources\\\\puzzles\""
+        private val PUZZLE_DIR = System.getProperty("user.dir") + "\\src\\main\\resources\\puzzles"
     }
 }

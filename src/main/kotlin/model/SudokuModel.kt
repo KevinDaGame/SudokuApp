@@ -1,8 +1,9 @@
 package model
 
+import model.visitor.IElement
 import model.visitor.IVisitor
 
-class SudokuModel(val children: List<ICheckable>, val validCharacters: Set<Char>, val height: Int, val width: Int) : ICheckable {
+class SudokuModel(val children: List<ICheckable>, val validCharacters: Set<Char>, val height: Int, val width: Int) : ICheckable, IElement {
     override fun isSolved(): Boolean {
         return children.all { it.isSolved() }
     }
@@ -18,7 +19,7 @@ class SudokuModel(val children: List<ICheckable>, val validCharacters: Set<Char>
             return children.flatMap { it.getCells() }
     }
 
-    fun accept(visitor: IVisitor) {
+    override fun accept(visitor: IVisitor) {
         visitor.visit(this)
     }
 

@@ -6,9 +6,9 @@ class SolveSudokuVisitor : IVisitor {
     override fun visit(sudoku: SudokuModel) {
         val board = Array(sudoku.width) { arrayOfNulls<SudokuCell>(sudoku.height) }
 
-        for (group in sudoku.sudokuGroups) {
+        for (group in sudoku.children) {
             if (group is SudokuBlock) {
-                for (cell in group.cells) {
+                for (cell in group.getCells()) {
                     if (cell.value.state == CellState.DEFINITIVE) {
                         cell.value = CellValue(0, CellState.EMPTY)
                     }
@@ -34,7 +34,7 @@ class SolveSudokuVisitor : IVisitor {
                         // place num
                         cell.value = CellValue(num, CellState.DEFINITIVE)
                         // check if placing num at (row, col) is valid
-                        if (sudoku.sudokuGroups.filter { it.cells.contains(cell) }
+                        if (sudoku.children.filter { it.getCells().contains(cell) }
                                 .all { it.getInvalidCells().isEmpty() }) {
 
                             // recursively solve the rest of the board
